@@ -27,7 +27,7 @@ pip install Pillow
 2.  **Add Images:** Place your `.gif` files in the same folder.
 3.  **Run:** Execute the script:
     ```bash
-    python gif_converter.py
+    python Gif2OLED.py
     ```
 4.  **Output:** The script will generate a `.c` and `.h` file for every GIF found (e.g., `my_anim.gif` becomes `my_anim.c` and `my_anim.h`).
 

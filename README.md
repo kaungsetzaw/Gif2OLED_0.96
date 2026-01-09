@@ -92,7 +92,7 @@ void loop() {
 
 Or
 
-```
+```cpp
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>

@@ -90,6 +90,65 @@ void loop() {
 }
 ```
 
+Or
+
+```
+#include <Arduino.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+// This header should contain your PROGMEM array: 
+// const unsigned char my_anim_data[][1024] PROGMEM = { ... };
+#include "my_anim.h" 
+
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define OLED_RESET    -1 
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+// --- Function Declaration ---
+
+/**
+ * Plays a full animation sequence
+ * @param frames     The 2D array stored in Flash memory
+ * @param frameCount Total number of frames to play
+ */
+void playAnimation(const unsigned char frames[][1024], int frameCount) {
+  for (int i = 0; i < frameCount; i++) {
+    display.clearDisplay();
+    
+    // drawBitmap(x, y, data, width, height, color)
+    // The library automatically handles PROGMEM data pointers
+    display.drawBitmap(0, 0, frames[i], 128, 64, SSD1306_WHITE);
+    
+    display.display();
+    delay(30); // ~33 FPS
+  }
+}
+
+// --- Main Program ---
+
+void setup() {
+  // Initialize with the I2C addr 0x3C (common for 128x64 OLEDs)
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    for(;;); // Don't proceed, loop forever if display fails
+  }
+  
+  display.clearDisplay();
+  display.display();
+}
+
+void loop() {
+  // Call the function using your data from my_anim.h
+  playAnimation(my_anim_data, MY_ANIM_FRAME_COUNT);
+  
+  delay(1000); // Pause for 1 second before looping the animation
+}
+
+```
+
+
 ## 🛠 Technical Details
 
 * **Resolution:** Fixed at 128x64.
